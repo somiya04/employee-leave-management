@@ -36,7 +36,7 @@ def init_db():
 
 @app.route("/")
 def home():
-    return redirect("/add-employee")
+  return redirect("/dashboard")
 
 
 @app.route("/add-employee", methods=["GET", "POST"])
