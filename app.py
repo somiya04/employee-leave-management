@@ -50,7 +50,10 @@ def add_employee():
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT INTO employees (name, email, department) VALUES (?, ?, ?)",
+            """
+            INSERT INTO employees (name, email, department)
+            VALUES (?, ?, ?)
+            """,
             (name, email, department)
         )
 
@@ -72,10 +75,12 @@ def employees():
 
     conn.close()
 
-    return render_template("employees.html", employees=employees)
+    return render_template(
+        "employees.html",
+        employees=employees
+    )
 
 
-@app.route("/apply-leave", methods=["GET", "POST"])
 @app.route("/apply-leave", methods=["GET", "POST"])
 def apply_leave():
     conn = sqlite3.connect("database.db")
@@ -126,7 +131,10 @@ def leave_requests():
 
     conn.close()
 
-    return render_template("leave_requests.html", leaves=leaves)
+    return render_template(
+        "leave_requests.html",
+        leaves=leaves
+    )
 
 
 @app.route("/approve-leave/<int:leave_id>")
@@ -135,7 +143,11 @@ def approve_leave(leave_id):
     cursor = conn.cursor()
 
     cursor.execute(
-        "UPDATE leave_requests SET status = 'Approved' WHERE id = ?",
+        """
+        UPDATE leave_requests
+        SET status = 'Approved'
+        WHERE id = ?
+        """,
         (leave_id,)
     )
 
@@ -151,7 +163,11 @@ def reject_leave(leave_id):
     cursor = conn.cursor()
 
     cursor.execute(
-        "UPDATE leave_requests SET status = 'Rejected' WHERE id = ?",
+        """
+        UPDATE leave_requests
+        SET status = 'Rejected'
+        WHERE id = ?
+        """,
         (leave_id,)
     )
 
@@ -159,20 +175,28 @@ def reject_leave(leave_id):
     conn.close()
 
     return redirect("/leave-requests")
+
+
 @app.route("/delete-employee/<int:employee_id>")
 def delete_employee(employee_id):
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
-    # Pehle employee ki leave requests delete karna
+    # First delete related leave requests
     cursor.execute(
-        "DELETE FROM leave_requests WHERE employee_id = ?",
+        """
+        DELETE FROM leave_requests
+        WHERE employee_id = ?
+        """,
         (employee_id,)
     )
 
-    # Employee delete karna
+    # Then delete employee
     cursor.execute(
-        "DELETE FROM employees WHERE id = ?",
+        """
+        DELETE FROM employees
+        WHERE id = ?
+        """,
         (employee_id,)
     )
 
@@ -180,6 +204,7 @@ def delete_employee(employee_id):
     conn.close()
 
     return redirect("/employees")
+
 
 @app.route("/edit-employee/<int:employee_id>", methods=["GET", "POST"])
 def edit_employee(employee_id):
@@ -195,7 +220,12 @@ def edit_employee(employee_id):
             UPDATE employees
             SET name = ?, email = ?, department = ?
             WHERE id = ?
-        """, (name, email, department, employee_id))
+        """, (
+            name,
+            email,
+            department,
+            employee_id
+        ))
 
         conn.commit()
         conn.close()
@@ -203,7 +233,10 @@ def edit_employee(employee_id):
         return redirect("/employees")
 
     cursor.execute(
-        "SELECT * FROM employees WHERE id = ?",
+        """
+        SELECT * FROM employees
+        WHERE id = ?
+        """,
         (employee_id,)
     )
 
@@ -216,6 +249,7 @@ def edit_employee(employee_id):
         employee=employee
     )
 
+
 @app.route("/dashboard")
 def dashboard():
     conn = sqlite3.connect("database.db")
@@ -227,19 +261,25 @@ def dashboard():
     cursor.execute("SELECT COUNT(*) FROM leave_requests")
     total_leaves = cursor.fetchone()[0]
 
-    cursor.execute(
-        "SELECT COUNT(*) FROM leave_requests WHERE status = 'Pending'"
-    )
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM leave_requests
+        WHERE status = 'Pending'
+    """)
     pending_leaves = cursor.fetchone()[0]
 
-    cursor.execute(
-        "SELECT COUNT(*) FROM leave_requests WHERE status = 'Approved'"
-    )
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM leave_requests
+        WHERE status = 'Approved'
+    """)
     approved_leaves = cursor.fetchone()[0]
 
-    cursor.execute(
-        "SELECT COUNT(*) FROM leave_requests WHERE status = 'Rejected'"
-    )
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM leave_requests
+        WHERE status = 'Rejected'
+    """)
     rejected_leaves = cursor.fetchone()[0]
 
     conn.close()
@@ -254,6 +294,9 @@ def dashboard():
     )
 
 
+# Database initialization for Render/Gunicorn
+init_db()
+
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
