@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Employees</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .buttons {
+            margin-bottom: 20px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            text-decoration: none;
+            background: #2c3e50;
+            color: white;
+            padding: 12px 20px;
+            margin-right: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .buttons a:hover {
+            background: #1a252f;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        .edit-btn {
+            background: #f39c12;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 6px;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background: #c0392b;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .edit-btn:hover {
+            background: #d68910;
+        }
+
+        .delete-btn:hover {
+            background: #922b21;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Employee Management System</h1>
+        <p>All Employees</p>
+    </div>
+
+    <div class="container">
+
+        <h2>Employee List</h2>
+
+        <div class="buttons">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/add-employee">Add New Employee</a>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Action</th>
+            </tr>
+
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee[0] }}</td>
+                <td>{{ employee[1] }}</td>
+                <td>{{ employee[2] }}</td>
+                <td>{{ employee[3] }}</td>
+                <td>
+                    <a
+                        class="edit-btn"
+                        href="/edit-employee/{{ employee[0] }}"
+                    >
+                        Edit
+                    </a>
+
+                    <a
+                        class="delete-btn"
+                        href="/delete-employee/{{ employee[0] }}"
+                        onclick="return confirm('Are you sure you want to delete this employee?');"
+                    >
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            font-size: 32px;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .navigation {
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            text-decoration: none;
+            background: #3498db;
+            color: white;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 6px;
+        }
+
+        .navigation a:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Employee Leave Management System</h1>
+        <p>Admin Dashboard</p>
+    </div>
+
+    <div class="container">
+
+        <div class="cards">
+
+            <div class="card">
+                <h2>{{ total_employees }}</h2>
+                <p>Total Employees</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ total_leaves }}</h2>
+                <p>Total Leave Requests</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ pending_leaves }}</h2>
+                <p>Pending Leaves</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ approved_leaves }}</h2>
+                <p>Approved Leaves</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ rejected_leaves }}</h2>
+                <p>Rejected Leaves</p>
+            </div>
+
+        </div>
+
+        <div class="navigation">
+            <a href="/add-employee">Add Employee</a>
+            <a href="/employees">View Employees</a>
+            <a href="/apply-leave">Apply Leave</a>
+            <a href="/leave-requests">Leave Requests</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
